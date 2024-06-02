@@ -1,31 +1,31 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "lasers",
 	"version": "${version}",
-	"name": "Example mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Lina's Lasers Mod",
+	"description": "Lasers!",
 	"authors": [
-		"Me!"
+		"Lina <dev@lina.moe>"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://lasers.lina.moe/",
+		"sources": "https://github.com/nullium21/lasers-mod"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+	"icon": "assets/lasers/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"moe.lina.lasers.LasersMod"
 		],
 		"client": [
-			"com.example.ExampleModClient"
+			"moe.lina.lasers.LasersModClient"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
+		"lasers.mixins.json",
 		{
-			"config": "modid.client.mixins.json",
+			"config": "lasers.client.mixins.json",
 			"environment": "client"
 		}
 	],

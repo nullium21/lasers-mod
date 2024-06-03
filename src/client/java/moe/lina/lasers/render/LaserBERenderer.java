@@ -9,6 +9,7 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import org.joml.Quaternionf;
 
 import java.io.IOException;
 
@@ -17,14 +18,14 @@ public class LaserBERenderer implements BlockEntityRenderer<LaserBE> {
 
     // model data for the beam, taken from Blender
     private static final float[][] vertices = {
-            { 0.400000f, 1.000000f,  0.600000f },
-            { 0.400000f, 16.000000f, 0.600000f },
-            { 0.400000f, 1.000000f,  0.400000f },
-            { 0.400000f, 16.000000f, 0.400000f },
-            { 0.600000f, 1.000000f,  0.600000f },
-            { 0.600000f, 16.000000f, 0.600000f },
-            { 0.600000f, 1.000000f,  0.400000f },
-            { 0.600000f, 16.000000f, 0.400000f },
+            { -0.100000f, 0.000000f,  0.100000f },
+            { -0.100000f, 16.000000f, 0.100000f },
+            { -0.100000f, 0.000000f,  -0.100000f },
+            { -0.100000f, 16.000000f, -0.100000f },
+            { 0.100000f, 0.000000f,  0.100000f },
+            { 0.100000f, 16.000000f, 0.100000f },
+            { 0.100000f, 0.000000f,  -0.100000f },
+            { 0.100000f, 16.000000f, -0.100000f },
     };
 
     private static final int[] indices = {
@@ -69,14 +70,22 @@ public class LaserBERenderer implements BlockEntityRenderer<LaserBE> {
         matrices.push();
 
         var buffer = vertexConsumers.getBuffer(RENDER_LAYER);
-        var matrix = matrices.peek();
 
-        for (int i : indices) {
-            float[] pos = vertices[i-1];
+        // translate to center
+        matrices.translate(0.5, 0.5, 0.5);
 
-            buffer.vertex(matrix, pos[0], pos[1], pos[2]).color(.25f, 0.f, 0.f, 0.5f).next();
-        }
+        renderBeam(matrices, entity.getLaserQuat(), buffer);
 
         matrices.pop();
+    }
+
+    private static void renderBeam(MatrixStack matrices, Quaternionf rotation, VertexConsumer buffer) {
+        matrices.multiply(rotation);
+
+        var matrix = matrices.peek();
+        for (int i : indices) {
+            float[] pos = vertices[i-1];
+            buffer.vertex(matrix, pos[0], pos[1], pos[2]).color(.25f, 0.f, 0.f, 0.5f).next();
+        }
     }
 }

@@ -1,8 +1,7 @@
 package moe.lina.lasers;
 
 import moe.lina.lasers.base.HasIdentifier;
-import moe.lina.lasers.content.LaserBE;
-import moe.lina.lasers.content.LaserBlock;
+import moe.lina.lasers.content.*;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.block.Block;
@@ -22,11 +21,16 @@ public class LasersMod implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("lasers");
 
-	public static final LaserBlock LASER_BLOCK = blockWithItem(new LaserBlock());
+	public static final LaserBlock LASER_BLOCK = block(new LaserBlock());
+	public static final LaserItem LASER_BLOCK_ITEM = Registry.register(Registries.ITEM, LASER_BLOCK.getId(), new LaserItem());
 	public static final BlockEntityType<LaserBE> LASER_BE = blockEntity(LASER_BLOCK, LaserBE::new);
 
 	public static Identifier id(String path) {
 		return Identifier.of("lasers", path);
+	}
+
+	private static <T extends Block & HasIdentifier> T block(T t) {
+		return Registry.register(Registries.BLOCK, t.getId(), t);
 	}
 
 	private static <T extends Block & HasIdentifier> T blockWithItem(T t) {

@@ -7,11 +7,14 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 
 public class LaserBlock extends Block implements BlockEntityProvider, HasIdentifier {
     public LaserBlock() {
@@ -35,5 +38,10 @@ public class LaserBlock extends Block implements BlockEntityProvider, HasIdentif
     @Override
     public Identifier getId() {
         return LasersMod.id("laser");
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return LaserBE::tick;
     }
 }

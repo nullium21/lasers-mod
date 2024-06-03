@@ -1,11 +1,16 @@
 package moe.lina.lasers.content;
 
 import moe.lina.lasers.LasersMod;
+import moe.lina.lasers.base.LaserReceiver;
 import moe.lina.lasers.util.BeamSegment;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
+import net.minecraft.world.World;
 import org.apache.commons.compress.utils.Lists;
 import org.joml.Math;
 
@@ -45,5 +50,39 @@ public class LaserBE extends BlockEntity {
 
     public List<BeamSegment> getSegments() {
         return segments;
+    }
+
+    public static void tick(World world, BlockPos pos, BlockState state, BlockEntity ent) {
+        if (!(ent instanceof LaserBE be)) return;
+        if (be.pointsAt == null) return;
+
+        var posVec = pos.toCenterPos();
+
+        var direction = be.segments.isEmpty()
+                ? be.pointsAt.toCenterPos().subtract(posVec).normalize()
+                : be.segments.getFirst().direction;
+
+        var raycast = world.raycast(new RaycastContext(
+                posVec.add(direction), posVec.add(direction.multiply(1024)),
+                RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY,
+                ShapeContext.absent()
+        ));
+
+        if (raycast.getType() == HitResult.Type.MISS) {
+            // we didn't hit *any* block, just draw a long segment
+            be.segments.clear();
+            be.segments.add(new BeamSegment(1024, direction));
+            return;
+        }
+
+//        var hitState = world.getBlockState(raycast.getBlockPos());
+        // todo: check if is transparent for lasers (glass, etc)
+
+        if (world.getBlockEntity(raycast.getBlockPos()) instanceof LaserReceiver recv) {
+            recv.onLaserHit(be, raycast);
+        } else {
+            be.segments.clear();
+            be.segments.add(new BeamSegment((float) raycast.getBlockPos().toCenterPos().distanceTo(posVec), direction));
+        }
     }
 }

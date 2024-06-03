@@ -22,6 +22,7 @@
 			"moe.lina.lasers.LasersModClient"
 		]
 	},
+	"accessWidener": "lasers.accesswidener",
 	"mixins": [
 		"lasers.mixins.json",
 		{

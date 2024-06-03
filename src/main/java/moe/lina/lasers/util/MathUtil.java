@@ -1,4 +1,4 @@
-package moe.lina.lasers;
+package moe.lina.lasers.util;
 
 import net.minecraft.util.math.Vec3d;
 import org.joml.Math;

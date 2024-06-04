@@ -53,13 +53,13 @@ public class LaserItem extends BlockItem {
 
         var currentTarget = getTargetedBlock(stack);
 
-        tooltip.add(Text.literal("RMB to point at a block"));
+        tooltip.add(Text.literal("Shift-RMB to point at a block"));
         if (currentTarget != null) tooltip.add(Text.literal("Current target: ").append(currentTarget.toShortString()));
     }
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        if (context.getPlayer() != null && !context.getPlayer().isSneaking()) {
+        if (context.getPlayer() != null && context.getPlayer().isSneaking()) {
             LasersMod.LOGGER.info("laser item used on {}", context.getBlockPos());
 
             setTargetedBlock(context.getStack(), context.getBlockPos());

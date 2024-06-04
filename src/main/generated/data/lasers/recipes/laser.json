@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "c": {
+      "tag": "c:cobblestones"
+    },
+    "d": {
+      "tag": "c:dusts/redstone"
+    },
+    "i": {
+      "tag": "c:ingots/iron"
+    },
+    "l": {
+      "item": "minecraft:redstone_lamp"
+    },
+    "q": {
+      "tag": "c:gems/quartz"
+    }
+  },
+  "pattern": [
+    "iqi",
+    "dld",
+    "ccc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lasers:laser"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "c": {
+      "tag": "c:cobblestones"
+    },
+    "d": {
+      "tag": "c:dusts/redstone"
+    },
+    "q": {
+      "tag": "c:gems/quartz"
+    }
+  },
+  "pattern": [
+    "cqc",
+    "dqd",
+    "ccc"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lasers:laser_receiver"
+  }
+}

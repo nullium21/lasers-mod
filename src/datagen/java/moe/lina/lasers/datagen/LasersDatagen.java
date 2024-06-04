@@ -7,15 +7,24 @@ import moe.lina.lasers.base.HasIdentifier;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.data.client.*;
+import net.minecraft.data.server.recipe.RecipeExporter;
+import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
+import net.minecraft.item.Items;
+import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
+import org.jetbrains.annotations.Nullable;
 
 import static moe.lina.lasers.LasersMod.*;
 
@@ -86,5 +95,45 @@ public class LasersDatagen implements DataGeneratorEntrypoint {
                 List.of(),
                 List.of(ConventionalBlockTags.GLASS_BLOCKS, ConventionalBlockTags.GLASS_PANES)
         ));
+
+        pack.addProvider((out, registry) -> new FabricRecipeProvider(out, registry) {
+
+            @Override
+            public void generate(RecipeExporter exporter) {
+                ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, LASER_BLOCK_ITEM)
+                        .criterion(FabricRecipeProvider.hasItem(Items.REDSTONE), FabricRecipeProvider.conditionsFromItem(Items.REDSTONE))
+                        .input('d', ConventionalItemTags.REDSTONE_DUSTS)
+                        .input('c', ConventionalItemTags.COBBLESTONES)
+                        .input('i', ConventionalItemTags.IRON_INGOTS)
+                        .input('l', Items.REDSTONE_LAMP)
+                        .input('q', ConventionalItemTags.QUARTZ_GEMS)
+                        .pattern("iqi")
+                        .pattern("dld")
+                        .pattern("ccc")
+                        .offerTo(exporter);
+
+                ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, LASER_RECEIVER_BLOCK)
+                        .criterion(FabricRecipeProvider.hasItem(Items.REDSTONE), FabricRecipeProvider.conditionsFromItem(Items.REDSTONE))
+                        .input('c', ConventionalItemTags.COBBLESTONES)
+                        .input('d', ConventionalItemTags.REDSTONE_DUSTS)
+                        .input('q', ConventionalItemTags.QUARTZ_GEMS)
+                        .pattern("cqc")
+                        .pattern("dqd")
+                        .pattern("ccc")
+                        .offerTo(exporter);
+
+                ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, MIRROR_BLOCK, 2)
+                        .criterion(FabricRecipeProvider.hasItem(Items.GLASS), FabricRecipeProvider.conditionsFromItem(Items.GLASS))
+                        .input(ConventionalItemTags.GLASS_PANES)
+                        .input(Items.IRON_NUGGET)
+                        .input(ConventionalItemTags.WHITE_DYES)
+                        .offerTo(exporter);
+            }
+        });
+    }
+
+    @Override
+    public String getEffectiveModId() {
+        return "lasers";
     }
 }

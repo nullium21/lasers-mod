@@ -1,6 +1,5 @@
 package moe.lina.lasers.datagen;
 
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,7 +65,7 @@ public class LasersDatagen implements DataGeneratorEntrypoint {
     }
 
     private static <T> FabricDataGenerator.Pack.RegistryDependentFactory<FabricTagProvider<T>> tag(TagKey<T> key, RegistryKey<? extends Registry<T>> rkey, List<T> entries, List<TagKey<T>> tags) {
-        return (out, registry) -> new FabricTagProvider<T>(out, rkey, registry) {
+        return (out, registry) -> new FabricTagProvider<>(out, rkey, registry) {
             @Override
             protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
                 var builder = getOrCreateTagBuilder(key);

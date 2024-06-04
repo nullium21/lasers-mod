@@ -15,7 +15,6 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.apache.commons.compress.utils.Lists;
 import org.joml.Math;
-import org.joml.Vector4d;
 
 import java.util.List;
 

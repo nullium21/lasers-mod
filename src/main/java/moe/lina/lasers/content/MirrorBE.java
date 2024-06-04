@@ -2,7 +2,6 @@ package moe.lina.lasers.content;
 
 import moe.lina.lasers.LasersMod;
 import moe.lina.lasers.base.LaserReceiver;
-import moe.lina.lasers.util.BeamSegment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.state.property.Properties;

@@ -1,5 +1,6 @@
 package moe.lina.lasers.util;
 
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Quaternionf;
 
@@ -7,6 +8,8 @@ public class BeamSegment {
     public final float length;
     public final Vec3d direction;
     public final Quaternionf quat;
+
+    public DyeColor dyeColor;
 
     public BeamSegment(float len, Vec3d dir) {
         length = len;

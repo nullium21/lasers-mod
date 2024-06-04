@@ -5,7 +5,9 @@ import moe.lina.lasers.base.LaserReceiver;
 import moe.lina.lasers.util.BeamSegment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Stainable;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -13,6 +15,7 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import org.apache.commons.compress.utils.Lists;
 import org.joml.Math;
+import org.joml.Vector4d;
 
 import java.util.List;
 
@@ -63,10 +66,10 @@ public class LaserBE extends BlockEntity {
                 : be.segments.getFirst().direction;
 
         be.segments.clear();
-        raycast(world, posVec, direction, be, be.segments);
+        raycast(world, posVec, direction, be, be.segments, null);
     }
 
-    private static void raycast(World world, Vec3d from, Vec3d direction, LaserBE be, List<BeamSegment> addTo) {
+    private static void raycast(World world, Vec3d from, Vec3d direction, LaserBE be, List<BeamSegment> addTo, DyeColor color) {
         var raycast = world.raycast(new RaycastContext(
                 from.add(direction), from.add(direction.multiply(1024)),
                 RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY,
@@ -74,14 +77,21 @@ public class LaserBE extends BlockEntity {
         ));
 
         if (raycast.getType() == HitResult.Type.MISS) {
-            addTo.add(new BeamSegment(1024, direction));
+            var segment = new BeamSegment(1024, direction);
+            segment.dyeColor = color;
+            addTo.add(segment);
             return;
         }
 
-        addTo.add(new BeamSegment((float) raycast.getPos().distanceTo(from), direction));
+        var segment = new BeamSegment((float) raycast.getPos().distanceTo(from), direction);
+        segment.dyeColor = color;
+        addTo.add(segment);
 
-        if (world.getBlockState(raycast.getBlockPos()).isIn(LasersMod.LASER_TRANSPARENT)) {
-            raycast(world, raycast.getPos(), direction, be, addTo);
+        var blockstate = world.getBlockState(raycast.getBlockPos());
+        if (blockstate.getBlock() instanceof Stainable st) color = st.getColor();
+
+        if (blockstate.isIn(LasersMod.LASER_TRANSPARENT)) {
+            raycast(world, raycast.getPos(), direction, be, addTo, color);
         }
 
         if (world.getBlockEntity(raycast.getBlockPos()) instanceof LaserReceiver recv) {
@@ -89,7 +99,7 @@ public class LaserBE extends BlockEntity {
             if (result == LaserReceiver.LaserHitResult.CONSUME) return;
 
             var newDirection = result == LaserReceiver.LaserHitResult.REDIRECT ? result.newDirection : direction;
-            raycast(world, raycast.getPos(), newDirection, be, addTo);
+            raycast(world, raycast.getPos(), newDirection, be, addTo, color);
         }
     }
 }

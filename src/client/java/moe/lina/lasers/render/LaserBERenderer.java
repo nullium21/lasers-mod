@@ -9,6 +9,7 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.DyeColor;
 import org.joml.Quaternionf;
 
 import java.io.IOException;
@@ -73,7 +74,7 @@ public class LaserBERenderer implements BlockEntityRenderer<LaserBE> {
 
         for (var segment : entity.getSegments()) {
             matrices.push();
-            renderBeamSegment(matrices, segment.quat, segment.length, buffer);
+            renderBeamSegment(matrices, segment.quat, segment.length, segment.dyeColor, buffer);
             matrices.pop();
 
             matrices.translate(segment.direction.x * segment.length, segment.direction.y * segment.length, segment.direction.z * segment.length);
@@ -82,14 +83,16 @@ public class LaserBERenderer implements BlockEntityRenderer<LaserBE> {
         matrices.pop();
     }
 
-    private static void renderBeamSegment(MatrixStack matrices, Quaternionf rotation, float length, VertexConsumer buffer) {
+    private static void renderBeamSegment(MatrixStack matrices, Quaternionf rotation, float length, DyeColor color, VertexConsumer buffer) {
         matrices.translate(0.5, 0.5, 0.5);
         matrices.multiply(rotation);
 
         var matrix = matrices.peek();
         for (int i : indices) {
             float[] pos = vertices[i-1];
-            buffer.vertex(matrix, pos[0], pos[1] * length, pos[2]).color(.25f, 0.f, 0.f, 0.5f).next();
+            float[] rgb = color == null ? new float[]{ .25f, 0.f, 0.f } : color.getColorComponents();
+
+            buffer.vertex(matrix, pos[0], pos[1] * length, pos[2]).color(rgb[0], rgb[1], rgb[2], 0.5f).next();
         }
     }
 }

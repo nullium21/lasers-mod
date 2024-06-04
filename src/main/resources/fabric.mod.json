@@ -23,13 +23,6 @@
 		]
 	},
 	"accessWidener": "lasers.accesswidener",
-	"mixins": [
-		"lasers.mixins.json",
-		{
-			"config": "lasers.client.mixins.json",
-			"environment": "client"
-		}
-	],
 	"depends": {
 		"fabricloader": ">=0.15.10",
 		"minecraft": "~1.20.6",

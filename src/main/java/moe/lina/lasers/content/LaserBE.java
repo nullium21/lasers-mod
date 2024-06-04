@@ -80,6 +80,10 @@ public class LaserBE extends BlockEntity {
 
         addTo.add(new BeamSegment((float) raycast.getPos().distanceTo(from), direction));
 
+        if (world.getBlockState(raycast.getBlockPos()).isIn(LasersMod.LASER_TRANSPARENT)) {
+            raycast(world, raycast.getPos(), direction, be, addTo);
+        }
+
         if (world.getBlockEntity(raycast.getBlockPos()) instanceof LaserReceiver recv) {
             var result = recv.onLaserHit(be, raycast, world);
             if (result == LaserReceiver.LaserHitResult.CONSUME) return;

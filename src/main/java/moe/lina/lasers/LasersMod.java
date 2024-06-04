@@ -11,6 +11,8 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,8 @@ public class LasersMod implements ModInitializer {
 
 	public static final MirrorBlock MIRROR_BLOCK = blockWithItem(new MirrorBlock());
 	public static final BlockEntityType<MirrorBE> MIRROR_BE = blockEntity(MIRROR_BLOCK, MirrorBE::new);
+
+	public static final TagKey<Block> LASER_TRANSPARENT = TagKey.of(RegistryKeys.BLOCK, id("laser_transparent"));
 
 	public static Identifier id(String path) {
 		return Identifier.of("lasers", path);

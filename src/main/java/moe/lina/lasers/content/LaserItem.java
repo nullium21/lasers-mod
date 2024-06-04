@@ -53,8 +53,8 @@ public class LaserItem extends BlockItem {
 
         var currentTarget = getTargetedBlock(stack);
 
-        tooltip.add(Text.literal("Shift-RMB to point at a block"));
-        tooltip.add(Text.literal("Current target: ").append(currentTarget == null ? "---" : currentTarget.toShortString()));
+        tooltip.add(Text.literal("RMB to point at a block"));
+        if (currentTarget != null) tooltip.add(Text.literal("Current target: ").append(currentTarget.toShortString()));
     }
 
     @Override

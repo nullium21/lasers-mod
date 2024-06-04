@@ -62,27 +62,30 @@ public class LaserBE extends BlockEntity {
                 ? be.pointsAt.toCenterPos().subtract(posVec).normalize()
                 : be.segments.getFirst().direction;
 
+        be.segments.clear();
+        raycast(world, posVec, direction, be, be.segments);
+    }
+
+    private static void raycast(World world, Vec3d from, Vec3d direction, LaserBE be, List<BeamSegment> addTo) {
         var raycast = world.raycast(new RaycastContext(
-                posVec.add(direction), posVec.add(direction.multiply(1024)),
+                from.add(direction), from.add(direction.multiply(1024)),
                 RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY,
                 ShapeContext.absent()
         ));
 
         if (raycast.getType() == HitResult.Type.MISS) {
-            // we didn't hit *any* block, just draw a long segment
-            be.segments.clear();
-            be.segments.add(new BeamSegment(1024, direction));
+            addTo.add(new BeamSegment(1024, direction));
             return;
         }
 
-//        var hitState = world.getBlockState(raycast.getBlockPos());
-        // todo: check if is transparent for lasers (glass, etc)
+        addTo.add(new BeamSegment((float) raycast.getPos().distanceTo(from), direction));
 
         if (world.getBlockEntity(raycast.getBlockPos()) instanceof LaserReceiver recv) {
-            recv.onLaserHit(be, raycast);
-        } else {
-            be.segments.clear();
-            be.segments.add(new BeamSegment((float) raycast.getBlockPos().toCenterPos().distanceTo(posVec), direction));
+            var result = recv.onLaserHit(be, raycast, world);
+            if (result == LaserReceiver.LaserHitResult.CONSUME) return;
+
+            var newDirection = result == LaserReceiver.LaserHitResult.REDIRECT ? result.newDirection : direction;
+            raycast(world, raycast.getPos(), newDirection, be, addTo);
         }
     }
 }

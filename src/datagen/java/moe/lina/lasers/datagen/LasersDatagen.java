@@ -22,9 +22,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
-import org.jetbrains.annotations.Nullable;
 
 import static moe.lina.lasers.LasersMod.*;
 

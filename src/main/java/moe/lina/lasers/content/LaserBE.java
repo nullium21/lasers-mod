@@ -20,6 +20,8 @@ import java.util.List;
 
 public class LaserBE extends BlockEntity {
 
+    public static final int MAX_RAYCAST_BOUNCES = 128;
+
     private BlockPos pointsAt;
     private final List<BeamSegment> segments = Lists.newArrayList();
 
@@ -69,6 +71,8 @@ public class LaserBE extends BlockEntity {
     }
 
     private static void raycast(World world, Vec3d from, Vec3d direction, LaserBE be, List<BeamSegment> addTo, DyeColor color) {
+        if (addTo.size() > MAX_RAYCAST_BOUNCES) return;
+
         var raycast = world.raycast(new RaycastContext(
                 from.add(direction), from.add(direction.multiply(1024)),
                 RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY,

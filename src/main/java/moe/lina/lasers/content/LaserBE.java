@@ -93,8 +93,8 @@ public class LaserBE extends BlockEntity {
             raycast(world, raycast.getPos(), direction, be, addTo, color);
         }
 
-        if (world.getBlockEntity(raycast.getBlockPos()) instanceof LaserReceiver recv) {
-            var result = recv.onLaserHit(be, raycast, world);
+        if (blockstate.getBlock() instanceof LaserReceiver recv) {
+            var result = recv.onLaserHit(be, raycast, world, blockstate);
             if (result == LaserReceiver.LaserHitResult.CONSUME) return;
 
             var newDirection = result == LaserReceiver.LaserHitResult.REDIRECT ? result.newDirection : direction;

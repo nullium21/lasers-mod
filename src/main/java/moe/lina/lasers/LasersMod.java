@@ -28,7 +28,6 @@ public class LasersMod implements ModInitializer {
 	public static final BlockEntityType<LaserBE> LASER_BE = blockEntity(LASER_BLOCK, LaserBE::new);
 
 	public static final MirrorBlock MIRROR_BLOCK = blockWithItem(new MirrorBlock());
-	public static final BlockEntityType<MirrorBE> MIRROR_BE = blockEntity(MIRROR_BLOCK, MirrorBE::new);
 
 	public static final TagKey<Block> LASER_TRANSPARENT = TagKey.of(RegistryKeys.BLOCK, id("laser_transparent"));
 

@@ -1,12 +1,13 @@
 package moe.lina.lasers.base;
 
 import moe.lina.lasers.content.LaserBE;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public interface LaserReceiver {
-    LaserHitResult onLaserHit(LaserBE laser, BlockHitResult hitResult, World world);
+    LaserHitResult onLaserHit(LaserBE laser, BlockHitResult hitResult, World world, BlockState blockState);
 
     enum LaserHitResult {
         /** the beam should get redirected towards {@code newDirection} */

@@ -22,6 +22,7 @@
 			"moe.lina.lasers.LasersModClient"
 		]
 	},
+	"mixins": ["lasers.mixins.json"],
 	"accessWidener": "lasers.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.15.10",

@@ -45,7 +45,7 @@ public class MirrorBlock extends Block implements HasIdentifier, LaserReceiver {
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return switch (state.get(Properties.FACING)) {
             case UP -> VoxelShapes.cuboid(0, 0, 0, 1, 0.5, 1);
             case DOWN -> VoxelShapes.cuboid(0, 0.5, 0, 1, 1, 1);

@@ -27,7 +27,7 @@ public class LaserBlock extends Block implements BlockEntityProvider, HasIdentif
     }
 
     @Override
-    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return VoxelShapes.union(
                 VoxelShapes.cuboid(0.25, 0.25, 0.25, 0.75, 0.75, 0.75),
                 VoxelShapes.cuboid(0.375, 0.125, 0.375, 0.625, 0.25, 0.625),

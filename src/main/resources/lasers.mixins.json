@@ -1,0 +1,7 @@
+{
+  "required": false,
+  "package": "moe.lina.lasers.mixin",
+  "mixins": [
+    "ShapeContextMixin"
+  ]
+}

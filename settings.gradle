@@ -6,5 +6,22 @@ pluginManagement {
 		}
 		mavenCentral()
 		gradlePluginPortal()
+		maven {
+			url = 'https://maven.kikugie.dev/snapshots'
+			name = 'Stonecutter'
+		}
 	}
+}
+
+plugins {
+	id 'dev.kikugie.stonecutter' version '0.4-beta.1'
+}
+
+stonecutter {
+	shared {
+		versions "1.20.6", "1.20.1"
+		vcsVersion = "1.20.6"
+	}
+
+	create rootProject
 }

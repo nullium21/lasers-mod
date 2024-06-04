@@ -66,14 +66,14 @@ public class LaserReceiverBlock extends Block implements HasIdentifier, LaserRec
     }
 
     @Override
-    protected int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
         if (direction != state.get(Properties.FACING) && world.getBlockEntity(pos) instanceof LaserReceiverBE be && be.lit)
             return 15;
         return 0;
     }
 
     @Override
-    protected boolean emitsRedstonePower(BlockState state) {
+    public boolean emitsRedstonePower(BlockState state) {
         return true;
     }
 }

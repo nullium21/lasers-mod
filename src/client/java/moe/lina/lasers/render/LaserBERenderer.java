@@ -92,7 +92,7 @@ public class LaserBERenderer implements BlockEntityRenderer<LaserBE> {
             float[] pos = vertices[i-1];
             float[] rgb = color == null ? new float[]{ .25f, 0.f, 0.f } : color.getColorComponents();
 
-            buffer.vertex(matrix, pos[0], pos[1] * length, pos[2]).color(rgb[0], rgb[1], rgb[2], 0.5f).next();
+            buffer.vertex(matrix.getPositionMatrix(), pos[0], pos[1] * length, pos[2]).color(rgb[0], rgb[1], rgb[2], 0.5f).next();
         }
     }
 }

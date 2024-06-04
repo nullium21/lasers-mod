@@ -7,6 +7,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.Stainable;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -34,9 +37,29 @@ public class LaserBE extends BlockEntity {
         setPointsAt(pointsAt);
     }
 
+    //? if >=1.20.6 {
     @Override
     protected void readComponents(ComponentsAccess components) {
         setPointsAt(components.get(LaserItem.TARGETED_BLOCK));
+    }
+    //?}
+
+    @Override
+    //? if >=1.20.6 {
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    //?} else {
+    /*public void readNbt(NbtCompound nbt) {
+    *///?}
+        setPointsAt(BlockPos.CODEC.parse(NbtOps.INSTANCE, nbt.get("TargetedBlockPos")).result().orElse(null));
+    }
+
+    @Override
+    //? if >=1.20.6 {
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    //?} else {
+    /*public void writeNbt(NbtCompound nbt) {
+    *///?}
+        nbt.put("TargetedBlockPos", BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, getPointsAt()).result().orElse(null));
     }
 
     public void setPointsAt(BlockPos pointsAt) {
@@ -76,7 +99,11 @@ public class LaserBE extends BlockEntity {
         var raycast = world.raycast(new RaycastContext(
                 from.add(direction), from.add(direction.multiply(1024)),
                 RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.ANY,
+                //? if >=1.20.6 {
                 ShapeContext.absent()
+                 //?} else {
+                /*null
+                *///?}
         ));
 
         if (raycast.getType() == HitResult.Type.MISS) {

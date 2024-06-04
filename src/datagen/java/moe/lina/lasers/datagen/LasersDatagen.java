@@ -80,6 +80,7 @@ public class LasersDatagen implements DataGeneratorEntrypoint {
         var pack = gen.createPack();
         pack.addProvider(simpleBlock(LASER_BLOCK));
         pack.addProvider(directionalBlock(MIRROR_BLOCK));
+        pack.addProvider(directionalBlock(LASER_RECEIVER_BLOCK));
         pack.addProvider(tag(
                 LASER_TRANSPARENT, RegistryKeys.BLOCK,
                 List.of(),

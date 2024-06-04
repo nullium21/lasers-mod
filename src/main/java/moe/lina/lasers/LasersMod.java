@@ -25,6 +25,9 @@ public class LasersMod implements ModInitializer {
 	public static final LaserItem LASER_BLOCK_ITEM = Registry.register(Registries.ITEM, LASER_BLOCK.getId(), new LaserItem());
 	public static final BlockEntityType<LaserBE> LASER_BE = blockEntity(LASER_BLOCK, LaserBE::new);
 
+	public static final MirrorBlock MIRROR_BLOCK = blockWithItem(new MirrorBlock());
+	public static final BlockEntityType<MirrorBE> MIRROR_BE = blockEntity(MIRROR_BLOCK, MirrorBE::new);
+
 	public static Identifier id(String path) {
 		return Identifier.of("lasers", path);
 	}

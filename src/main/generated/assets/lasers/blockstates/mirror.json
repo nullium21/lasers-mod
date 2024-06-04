@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "lasers:block/mirror",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "lasers:block/mirror",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "lasers:block/mirror"
+    },
+    "facing=south": {
+      "model": "lasers:block/mirror",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "lasers:block/mirror",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "lasers:block/mirror",
+      "y": 270
+    }
+  }
+}

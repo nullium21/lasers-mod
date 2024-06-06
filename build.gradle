@@ -53,12 +53,23 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${property('fabric_version')}"
 }
 
-processResources {
-	inputs.property "version", project.version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+def standardProcessResources(pr) {
+	pr.inputs.property "version", project.version
+	pr.inputs.property "mc_version", project.minecraft_version
+	pr.filesMatching("fabric.mod.json") {
+		expand([
+		        "version": project.version,
+				"mc_version": project.minecraft_version
+		])
 	}
+}
+
+processResources {
+	standardProcessResources(processResources)
+}
+
+processDatagenResources {
+	standardProcessResources(processDatagenResources)
 }
 
 tasks.withType(JavaCompile).configureEach {

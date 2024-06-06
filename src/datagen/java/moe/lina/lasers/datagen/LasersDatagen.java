@@ -6,25 +6,31 @@ import java.util.Optional;
 import moe.lina.lasers.base.HasIdentifier;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.data.client.*;
-import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.*;
 import net.minecraft.registry.tag.TagKey;
 
 import static moe.lina.lasers.LasersMod.*;
+
+//? if >=1.20.6 {
+/*import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
+import net.minecraft.data.server.recipe.RecipeExporter;
+*///?} else {
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
+import java.util.function.Consumer;
+import net.minecraft.data.server.recipe.RecipeJsonProvider;
+//?}
 
 public class LasersDatagen implements DataGeneratorEntrypoint {
 
@@ -94,17 +100,26 @@ public class LasersDatagen implements DataGeneratorEntrypoint {
                 List.of(ConventionalBlockTags.GLASS_BLOCKS, ConventionalBlockTags.GLASS_PANES)
         ));
 
-        pack.addProvider((out, registry) -> new FabricRecipeProvider(out, registry) {
+        pack.addProvider((/*? if =1.20.1 >>*/FabricDataOutput out /*? if >=1.20.6 >>*//*,registry*/) -> new FabricRecipeProvider(out /*? if >=1.20.6 >>*//*,registry*/) {
 
             @Override
-            public void generate(RecipeExporter exporter) {
+            //? if >=1.20.6 {
+            /*public void generate(RecipeExporter exporter) {
+            *///?} else {
+            public void generate(Consumer<RecipeJsonProvider> exporter) {
+            //?}
                 ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, LASER_BLOCK_ITEM)
                         .criterion(FabricRecipeProvider.hasItem(Items.REDSTONE), FabricRecipeProvider.conditionsFromItem(Items.REDSTONE))
                         .input('d', ConventionalItemTags.REDSTONE_DUSTS)
-                        .input('c', ConventionalItemTags.COBBLESTONES)
+                        //? if >=1.20.6 {
+                        /*.input('c', ConventionalItemTags.COBBLESTONES)
+                        .input('q', ConventionalItemTags.QUARTZ_GEMS)
+                        *///?} else {
+                        .input('c', Items.COBBLESTONE)
+                        .input('q', Items.QUARTZ)
+                        //?}
                         .input('i', ConventionalItemTags.IRON_INGOTS)
                         .input('l', Items.REDSTONE_LAMP)
-                        .input('q', ConventionalItemTags.QUARTZ_GEMS)
                         .pattern("iqi")
                         .pattern("dld")
                         .pattern("ccc")
@@ -112,9 +127,14 @@ public class LasersDatagen implements DataGeneratorEntrypoint {
 
                 ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, LASER_RECEIVER_BLOCK)
                         .criterion(FabricRecipeProvider.hasItem(Items.REDSTONE), FabricRecipeProvider.conditionsFromItem(Items.REDSTONE))
-                        .input('c', ConventionalItemTags.COBBLESTONES)
-                        .input('d', ConventionalItemTags.REDSTONE_DUSTS)
+                        //? if >=1.20.6 {
+                        /*.input('c', ConventionalItemTags.COBBLESTONES)
                         .input('q', ConventionalItemTags.QUARTZ_GEMS)
+                        *///?} else {
+                        .input('c', Items.COBBLESTONE)
+                        .input('q', Items.QUARTZ)
+                        //?}
+                        .input('d', ConventionalItemTags.REDSTONE_DUSTS)
                         .pattern("cqc")
                         .pattern("dqd")
                         .pattern("ccc")

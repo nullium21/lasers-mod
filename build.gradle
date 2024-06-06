@@ -90,6 +90,9 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.base.archivesName.get()}"}
 	}
+
+	destinationDirectory = file("../../build/libs")
+	archiveClassifier = "fabric-${project.minecraft_version}"
 }
 
 // configure the maven publication
